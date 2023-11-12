@@ -9,8 +9,8 @@ pipeline {
       steps {
         sh 'mvn clean -e'
         echo 'Build stage done'
-      }
-    }
+            }
+        }
         stage("compile Project"){
             steps {
                 
@@ -48,7 +48,7 @@ pipeline {
             }
         }
        
-    stage("Build image"){
+        stage("Build image"){
             steps {
 
                 sh '''
@@ -77,15 +77,27 @@ pipeline {
             }
             }
         }
-        stage("deploy the backend ") {
 
+        stage("deploy image"){
             steps {
-                    script {
-
-                            sh 'docker-compose down'
-                            sh 'docker-compose up -d'
+                 script{
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'hub_docker',
+                    usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                        env.REG_USERNAME = USERNAME
+                        env.REG_PASSWORD = PASSWORD
                     }
-                }
+
+               sh ''' 
+               docker login -u ${REG_USERNAME} -p ${REG_PASSWORD}
+               docker-compose down
+               docker-compose up -d
+                '''
+
+            }
+            }
+        }
+        
+        
     }
 
     environment {
