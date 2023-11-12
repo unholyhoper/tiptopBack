@@ -1,8 +1,6 @@
 pipeline {
     agent any
-    tools {
-        maven 'mvn'
-    }
+
     
     stages {
         stage ('maven clean') {
@@ -82,7 +80,7 @@ pipeline {
     }
 
     environment {
-        IMAGETAG = "${env.BUILD_ID}"
+        IMAGETAG = "latest"
     }
    
 }
