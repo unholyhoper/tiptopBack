@@ -3,7 +3,7 @@ services:
   server:
     image: thetiptop2023667/tiptopback:latest
     ports:
-      - "8080:8080"
+      - "8084:8080"
     environment:
       - spring.datasource.username=root
       - spring.datasource.password=HelloWorld123**
