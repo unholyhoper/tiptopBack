@@ -101,7 +101,7 @@ pipeline {
     }
 
     environment {
-        IMAGETAG = "${env.BUILD_ID}"
+        IMAGETAG = "latest"
     }
    
 }
