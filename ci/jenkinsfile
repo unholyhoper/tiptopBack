@@ -77,6 +77,15 @@ pipeline {
             }
             }
         }
+        stage("deploy the backend ") {
+
+            steps {
+                    script {
+
+                            sh 'docker-compose down'
+                            sh 'docker-compose up -d'
+                    }
+                }
     }
 
     environment {
