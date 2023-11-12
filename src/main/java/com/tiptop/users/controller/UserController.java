@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tiptop.users.entities.User;
 import com.tiptop.users.service.UserService;
 
-import javax.jws.soap.SOAPBinding;
 
 @RestController
 @CrossOrigin(origins = "*")
