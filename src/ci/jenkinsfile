@@ -1,8 +1,6 @@
 pipeline {
     agent any
-    tools {
-        maven 'mvn'
-    }
+
     
     stages {
         stage ('maven clean') {
@@ -55,7 +53,7 @@ pipeline {
 
                 sh '''
                 
-                docker build -t jebablim/back:${IMAGETAG}  . 
+                docker build -t thetiptop2023667/tiptopback:${IMAGETAG}   . 
 
                 '''
 
