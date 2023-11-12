@@ -1,13 +1,13 @@
 version: "3"
 services:
   server:
-    image: tiptop:latest
+    image: tiptopback:latest
     ports:
       - "8080:8080"
     environment:
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/tiptop?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - spring.datasource.username: root
+      - spring.datasource.password: HelloWorld123**
+      - spring.datasource.url: jdbc:mysql://localhost:3306/tiptopdb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     networks:
       - springmysql-net
     depends_on:
@@ -18,8 +18,9 @@ services:
     networks:
       - springmysql-net
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=tiptop
+      - MYSQL_ROOT_PASSWORD: HelloWorld123**
+      - MYSQL_DATABASE: tiptopdb
+      
 
 networks:
   springmysql-net:
