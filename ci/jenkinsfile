@@ -81,15 +81,15 @@ pipeline {
         stage("deploy image"){
             steps {
                  script{
-                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'hub_docker',
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'vmprod',
                     usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                        env.REG_USERNAME = USERNAME
-                        env.REG_PASSWORD = PASSWORD
+                        env.VM_USERNAME = USERNAME
+                        env.VM_PASSWORD = PASSWORD
                     }
 
                sh ''' 
-               
-               docker login -u ${REG_USERNAME} -p ${REG_PASSWORD}
+
+               ssh ${VM_USERNAME}:${VM_PASSWORD}@13.36.39.26 
                docker compose down
                docker compose up -d
                 '''
