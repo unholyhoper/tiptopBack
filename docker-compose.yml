@@ -1,9 +1,17 @@
 version: "3"
 services:
-  server:
+  frontend-server:
+    image: thetiptop2023667/tiptopfront:latest
+    ports:
+      - "4200:4200"      
+    networks:
+      - springmysql-net
+    depends_on:
+      - mysqldb
+  backend-server:
     image: thetiptop2023667/tiptopback:latest
     ports:
-      - "8084:8080"
+      - "8080:8080"
     environment:
       - spring.datasource.username=root
       - spring.datasource.password=HelloWorld123**

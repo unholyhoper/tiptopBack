@@ -88,6 +88,7 @@ pipeline {
                     }
 
                sh ''' 
+               
                docker login -u ${REG_USERNAME} -p ${REG_PASSWORD}
                docker compose down
                docker compose up -d
