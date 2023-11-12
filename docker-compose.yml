@@ -1,0 +1,31 @@
+version: "3"
+services:
+  springboot-app:
+    # container_name: spring-app
+    image: springbooot-app
+    restart: always
+    build: .
+    ports:
+      - 8080-8999:8090
+    networks:
+      - tiptop
+    depends_on:
+      - mysqldb
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_PORT: 3306
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    ports:
+      - 3307:3306
+    networks:
+      - tiptop
+    environment:
+      MYSQL_DATABASE: tiptop
+      MYSQL_ROOT_PASSWORD: root
+networks:
+  tiptop:
+    driver: bridge
