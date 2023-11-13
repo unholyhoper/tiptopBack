@@ -20,26 +20,27 @@ pipeline {
         }
         stage("maven tests"){
             steps {
+			        sh "mvn test"
                                 echo 'unit tests stage done'
             }
         }
-       
+
         stage("SonarQube Analysis") {
-          
+
            steps {
-            withSonarQubeEnv('SonarQube') 
+            withSonarQubeEnv('SonarQube')
             {
-                  sh ''' 
+                  sh '''
                         mvn clean verify sonar:sonar \
                         -Dsonar.projectKey=tiptopBack
-                        
-                        
+
+
                         '''
                   echo 'sonar static analysis done'
            }
            }
          }
-         
+
           stage("maven package") {
             steps {
                 script {
@@ -47,13 +48,13 @@ pipeline {
                 }
             }
         }
-       
+
         stage("Build image"){
             steps {
 
                 sh '''
-                
-                docker build -t thetiptop2023667/tiptopback:${IMAGETAG}   . 
+
+                docker build -t thetiptop2023667/tiptopback:${IMAGETAG}   .
 
                 '''
 
@@ -69,9 +70,9 @@ pipeline {
                         env.REG_PASSWORD = PASSWORD
                     }
 
-               sh ''' 
+               sh '''
                docker login -u ${REG_USERNAME} -p ${REG_PASSWORD}
-                docker push thetiptop2023667/tiptopback:${IMAGETAG} 
+                docker push thetiptop2023667/tiptopback:${IMAGETAG}
                 '''
 
             }
@@ -80,16 +81,11 @@ pipeline {
 
         stage("deploy image"){
             steps {
-                 script{
-                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'vmprod',
-                    usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                        env.VM_USERNAME = USERNAME
-                        env.VM_PASSWORD = PASSWORD
-                    }
 
-               sh ''' 
 
-               ssh ${VM_USERNAME}:${VM_PASSWORD}@13.36.39.26 
+               sh '''
+
+               ssh root@13.36.39.26
                docker compose down
                docker compose up -d
                 '''
