@@ -1,0 +1,103 @@
+pipeline {
+    agent any
+    tools {
+        maven 'mvn'
+    }
+    
+    stages {
+        stage ('maven clean') {
+      steps {
+        sh 'mvn clean -e'
+        echo 'Build stage done'
+            }
+        }
+        stage("compile Project"){
+            steps {
+                
+                 sh 'mvn compile'
+                  echo 'compile stage done'
+            }
+        }
+        stage("maven tests"){
+            steps {
+			        sh "mvn test"
+                                echo 'unit tests stage done'
+            }
+        }
+
+        stage("SonarQube Analysis") {
+
+           steps {
+            withSonarQubeEnv('SonarQube')
+            {
+                  sh '''
+                        mvn clean verify sonar:sonar \
+                        -Dsonar.projectKey=tiptopBack
+
+
+                        '''
+                  echo 'sonar static analysis done'
+           }
+           }
+         }
+
+          stage("maven package") {
+            steps {
+                script {
+                    sh "mvn package -DskipTests=true"
+                }
+            }
+        }
+
+        stage("Build image"){
+            steps {
+
+                sh '''
+
+                docker build -t thetiptop2023667/tiptopback:${IMAGETAG}   .
+
+                '''
+
+                  echo 'image builded'
+            }
+        }
+        stage("Push image"){
+            steps {
+                 script{
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'hub_docker',
+                    usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                        env.REG_USERNAME = USERNAME
+                        env.REG_PASSWORD = PASSWORD
+                    }
+
+               sh '''
+               docker login -u ${REG_USERNAME} -p ${REG_PASSWORD}
+                docker push thetiptop2023667/tiptopback:${IMAGETAG}
+                '''
+
+            }
+            }
+        }
+
+        stage("deploy image"){
+            steps {
+
+
+               sh '''
+
+               ssh root@13.36.39.26
+               docker compose down
+               docker compose up -d
+                '''
+
+            }
+            }
+        }
+        
+        
+
+
+    environment {
+        IMAGETAG = "latest"
+    }
+}
