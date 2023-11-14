@@ -85,7 +85,7 @@ pipeline {
 
                sh '''
 
-               ssh root@13.36.39.26
+               ssh root@thetiptop2023667
                docker compose down
                docker compose up -d
                 '''
