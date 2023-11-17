@@ -33,18 +33,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		http.authorizeRequests().antMatchers("/**").hasIpAddress( "15.237.223.123" );
 		http.authorizeRequests().antMatchers("/login").permitAll();
 		http.authorizeRequests().antMatchers("/add").permitAll();
-		http.authorizeRequests().antMatchers("/all").hasAuthority("ADMIN");
-		http.authorizeRequests().antMatchers("/users/{username}").hasAuthority("ADMIN");
-		http.authorizeRequests().antMatchers("/getTicketByUserId/{userId}").hasAuthority("ADMIN");
-		http.authorizeRequests().antMatchers("/jeux-concours").hasAuthority("ADMIN");
+		http.authorizeRequests().antMatchers("/all").permitAll();
+		http.authorizeRequests().antMatchers("/users/{username}").permitAll();
+		http.authorizeRequests().antMatchers("/getTicketByUserId/{userId}").permitAll();
+		http.authorizeRequests().antMatchers("/jeux-concours").permitAll();
 		http.authorizeRequests().antMatchers("/tickets").permitAll();
-		http.authorizeRequests().antMatchers("/addTicket").hasAuthority("ADMIN");
+		http.authorizeRequests().antMatchers("/addTicket").permitAll();
 		http.authorizeRequests().antMatchers("/getTickets").permitAll();
-		http.authorizeRequests().antMatchers("/getYearWinner").hasAuthority("ADMIN");
-		http.authorizeRequests().antMatchers("/asignTicket/{userId}").hasAuthority("USER");
-		http.authorizeRequests().antMatchers("/updateTicket/{ticketNumber}").hasAuthority("USER");
+		http.authorizeRequests().antMatchers("/getYearWinner").permitAll();
+		http.authorizeRequests().antMatchers("/asignTicket/{userId}").permitAll();
+		http.authorizeRequests().antMatchers("/updateTicket/{ticketNumber}").permitAll();
 		http.authorizeRequests().antMatchers("/getAllTickets").permitAll();
 		http.authorizeRequests().antMatchers("/getUserId/{username}").permitAll();
 		http.authorizeRequests().anyRequest().authenticated();
