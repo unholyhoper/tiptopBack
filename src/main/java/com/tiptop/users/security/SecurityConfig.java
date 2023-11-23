@@ -33,9 +33,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		http.authorizeRequests().antMatchers("/**").permitAll();
 		http.authorizeRequests().antMatchers("/**").hasIpAddress( "15.237.223.123" );
-		http.authorizeRequests().antMatchers("/login").permitAll();
 		http.authorizeRequests().antMatchers("/add").permitAll();
+		http.authorizeRequests().antMatchers("/login").permitAll();
 		http.authorizeRequests().antMatchers("/all").permitAll();
 		http.authorizeRequests().antMatchers("/users/{username}").permitAll();
 		http.authorizeRequests().antMatchers("/getTicketByUserId/{userId}").permitAll();
