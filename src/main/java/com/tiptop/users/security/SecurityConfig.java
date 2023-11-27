@@ -32,7 +32,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.authorizeRequests().antMatchers("/**").permitAll();
 		http.authorizeRequests().antMatchers("/**").hasIpAddress( "15.237.223.123" );
 		http.authorizeRequests().antMatchers("/add").permitAll();
