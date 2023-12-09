@@ -19,7 +19,6 @@ public class UserDTO {
     private String email;
     private String username;
     private String role;
-    @JsonIgnore
     private Collection<TicketDTO> tickets;
 
     public UserDTO() {
