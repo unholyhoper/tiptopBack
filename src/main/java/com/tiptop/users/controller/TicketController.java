@@ -1,5 +1,6 @@
 package com.tiptop.users.controller;
 
+import com.tiptop.users.dto.TicketDTO;
 import com.tiptop.users.entities.Ticket;
 import com.tiptop.users.entities.User;
 import com.tiptop.users.service.TicketService;
@@ -8,15 +9,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-
+import java.util.Collection;
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("/tickets")
 public class TicketController {
 
 	@Autowired
 	TicketService ticketService;
+
+	@GetMapping("")
+	public Collection<TicketDTO> findAllTickets(){
+		return ticketService.findAllTickets();
+	}
+
 
 
 	@PostMapping("/addTicket")

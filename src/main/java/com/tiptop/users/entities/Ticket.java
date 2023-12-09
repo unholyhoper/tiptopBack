@@ -11,6 +11,7 @@ public class Ticket {
 	private Long ticketId;
 	private Long ticketNumber;
 
+	private boolean used;
 	public User getUser() {
 		return user;
 	}
@@ -65,5 +66,10 @@ public class Ticket {
 	public String toString() {
 		return "ticket [TicketId=" + ticketId + ", TicketNumber=" + ticketNumber
 				+ "]";
+	}
+
+	private Long generateTicketNumber(){
+		long number = (long) Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000L;
+		return number;
 	}
 }

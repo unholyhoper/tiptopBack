@@ -1,9 +1,12 @@
 package com.tiptop.users.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
+import com.tiptop.users.dto.TicketDTO;
 import com.tiptop.users.entities.Ticket;
 import com.tiptop.users.entities.User;
 import com.tiptop.users.repos.ITicketRepository;
@@ -104,5 +107,10 @@ public class TicketService implements ITicketService{
 		} else {
 			return "Coffret découverte d’une valeur de 69€";
 		}
+	}
+
+	public Collection<TicketDTO> findAllTickets(){
+		Collection<Ticket> tickets = this.ticketRepo.findAll();
+		return tickets.stream().map(ticket -> new TicketDTO(ticket)).collect(Collectors.toList());
 	}
 }
