@@ -20,12 +20,14 @@ public class UserDTO {
     private String username;
     private String role;
     private Collection<TicketDTO> tickets;
+    private Long id;
 
     public UserDTO() {
 
     }
 
     public UserDTO(User user) {
+        this.id = user.getUser_id();
         this.email = user.getEmail();
         this.username = user.getUsername();
         this.role = String.valueOf(user.getRole());

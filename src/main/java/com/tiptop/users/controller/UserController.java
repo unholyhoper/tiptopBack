@@ -63,6 +63,11 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+    }
+
     @GetMapping("/users/{username}")
     public User getUserByUsername(@PathVariable String username) {
         return userService.findUserByUsername(username);

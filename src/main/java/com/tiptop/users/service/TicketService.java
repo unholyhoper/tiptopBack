@@ -1,12 +1,11 @@
 package com.tiptop.users.service;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.tiptop.users.dto.PrizeDTO;
 import com.tiptop.users.dto.TicketDTO;
+import com.tiptop.users.entities.PRIZE;
 import com.tiptop.users.entities.Ticket;
 import com.tiptop.users.entities.User;
 import com.tiptop.users.repos.ITicketRepository;
@@ -14,6 +13,7 @@ import com.tiptop.users.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 
@@ -122,5 +122,27 @@ public class TicketService implements ITicketService{
 		return tickets.stream().map(ticket -> new TicketDTO(ticket)).collect(Collectors.toList());
 	}
 
+	public PrizeDTO spinWheel(Ticket ticket, User user) {
+		List<PRIZE> items = new ArrayList<>();
+
+		for (PRIZE item : PRIZE.values())
+			for (int i = 0; i < item.percentage; i++)
+				items.add(item);
+
+		Collections.shuffle(items);
+		PRIZE[] prizes = (PRIZE[]) items.toArray(new PRIZE[]{});
+
+		Random random = new Random();
+
+		// Generate a random number between 0 (inclusive) and 100 (exclusive)
+		int randomNumber = random.nextInt(100);
+
+		PRIZE prizeWon = prizes[randomNumber];
+		user.getPrizes().add(prizeWon);
+		ticket.setUsed(true);
+		ticketRepo.save(ticket);
+		return new PrizeDTO(prizeWon,user);
+
+	}
 
 }

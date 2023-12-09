@@ -1,8 +1,11 @@
 package com.tiptop.users.controller;
 
+import com.tiptop.users.dto.PrizeDTO;
 import com.tiptop.users.dto.TicketDTO;
+import com.tiptop.users.entities.PRIZE;
 import com.tiptop.users.entities.Ticket;
 import com.tiptop.users.entities.User;
+import com.tiptop.users.exception.NoTicketFoundException;
 import com.tiptop.users.service.TicketService;
 import com.tiptop.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -65,5 +69,17 @@ public class TicketController {
 	public List<Object[]> findAllTicketsWithUsers(){
 		return ticketService.findAllTicketsWithUsers();
 	}
+
+	@PostMapping("/play")
+	public PrizeDTO spinwheel(@AuthenticationPrincipal Object principal) {
+		User user = userService.findUserByUsername(principal.toString());
+		Collection<Ticket> tickets = user.getTickets();
+		Optional<Ticket> ticketOptional = tickets.stream().filter(ticket -> !ticket.isUsed()).findAny();
+		Ticket ticket = ticketOptional.orElseThrow(() -> new NoTicketFoundException("new ticket found for user " + user.getUsername()));
+		PrizeDTO prize = ticketService.spinWheel(ticket,user);
+		return prize;
+	 }
+
+
 
 }
