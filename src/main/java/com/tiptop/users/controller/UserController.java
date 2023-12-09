@@ -1,11 +1,14 @@
 package com.tiptop.users.controller;
 
 
+import java.util.Collection;
 import java.util.List;
 
 import com.tiptop.users.config.JwtTokenUtil;
+import com.tiptop.users.dto.UserDTO;
 import com.tiptop.users.model.JwtRequest;
 import com.tiptop.users.model.JwtResponse;
+import javafx.print.Collation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -50,9 +53,14 @@ public class UserController {
 //    @Autowired
 //    UserService userService;
 
-    @RequestMapping(path="all",method=RequestMethod.GET)
-    public List<User> getAllUsers() {
-        return userService.findAllUsers();
+//    @RequestMapping(path="all",method=RequestMethod.GET)
+//    public List<User> getAllUsers() {
+//        return userService.findAllUsers();
+//    }
+//
+    @GetMapping
+    public Collection<UserDTO> getAllUsersv1(){
+        return userService.getAllUsers();
     }
 
     @GetMapping("/users/{username}")

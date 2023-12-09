@@ -1,5 +1,6 @@
 package com.tiptop.users.service;
 
+import com.tiptop.users.dto.UserDTO;
 import com.tiptop.users.entities.Role;
 import com.tiptop.users.entities.User;
 
@@ -14,4 +15,6 @@ public interface UserService {
 	User getYearWinner();
 
 	Long getUserIdByUsername(String username);
+
+	List<UserDTO> getAllUsers();
 }

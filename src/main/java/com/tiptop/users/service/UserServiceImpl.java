@@ -1,5 +1,6 @@
 package com.tiptop.users.service;
 
+import com.tiptop.users.dto.UserDTO;
 import com.tiptop.users.entities.ROLES;
 import com.tiptop.users.repos.ITicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import com.tiptop.users.entities.User;
 import com.tiptop.users.repos.UserRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -66,6 +68,10 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Override
+	public List<UserDTO> getAllUsers() {
+		return userRepository.findAll().stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
+	}
 
 
 }

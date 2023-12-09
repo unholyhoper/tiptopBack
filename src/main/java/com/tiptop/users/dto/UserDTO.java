@@ -31,8 +31,17 @@ public class UserDTO {
         this.username = user.getUsername();
         this.role = String.valueOf(user.getRole());
         this.enabled = user.getEnabled();
-//        this.tickets = user.getTickets().stream().map(ticket -> new TicketDTO(ticket)).collect(Collectors.toList());
+        Collection<Ticket> tickets = user.getTickets();
+        initializeTickets(tickets);
     }
 
-
+    private void initializeTickets(Collection<Ticket> tickets){
+        this.tickets = tickets.stream().map(
+                ticket -> {
+                    TicketDTO ticketDTO = new TicketDTO();
+                    ticketDTO.setTicketNumber(ticket.getTicketNumber());
+                    ticketDTO.setActive(ticket.isUsed());
+                    return ticketDTO;
+                }).collect(Collectors.toList());
+    }
 }
