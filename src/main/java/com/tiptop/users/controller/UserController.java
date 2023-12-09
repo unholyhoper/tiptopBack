@@ -91,7 +91,7 @@ public class UserController {
 	    }
 	    */
 
-    @PostMapping("/login1")
+    @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());

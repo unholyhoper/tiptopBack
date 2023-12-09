@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface ITicketRepository extends JpaRepository<Ticket, Long> {
@@ -19,4 +20,6 @@ public interface ITicketRepository extends JpaRepository<Ticket, Long> {
 
     @Query(value = "SELECT t.user_id FROM Ticket t ORDER BY RAND() LIMIT 1", nativeQuery = true)
     Long findRandomUser();
+
+    Collection<Ticket> findByUser(User user);
 }

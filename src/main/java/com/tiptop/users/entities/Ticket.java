@@ -68,6 +68,14 @@ public class Ticket {
 				+ "]";
 	}
 
+	public boolean isUsed() {
+		return used;
+	}
+
+	public void setUsed(boolean used) {
+		this.used = used;
+	}
+
 	private Long generateTicketNumber(){
 		long number = (long) Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000L;
 		return number;

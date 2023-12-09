@@ -14,11 +14,13 @@ public class TicketDTO {
 
     private UserDTO user;
 
+    boolean active;
     public TicketDTO() {
     }
 
     public TicketDTO(Ticket ticket){
         this.setUser(new UserDTO(ticket.getUser()));
+        this.active=ticket.isUsed();
         this.ticketNumber = ticket.getTicketNumber();
 
     }

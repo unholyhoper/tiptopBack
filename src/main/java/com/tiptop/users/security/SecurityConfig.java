@@ -47,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/add").permitAll();
 		http.authorizeRequests().antMatchers("/all").permitAll();
 		http.authorizeRequests().antMatchers("/tickets").permitAll();
+		http.authorizeRequests().antMatchers("/tickets/me").permitAll();
 		http.authorizeRequests().antMatchers("/users/{username}").permitAll();
 		http.authorizeRequests().antMatchers("/getTicketByUserId/{userId}").permitAll();
 		http.authorizeRequests().antMatchers("/jeux-concours").permitAll();

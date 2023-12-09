@@ -31,7 +31,11 @@ public class TicketService implements ITicketService{
 	public Long getMaxNumOfTickets() {
 		return ticketRepo.count();
 	}
-	
+
+	public List<TicketDTO> findTicketsByUser(User user) {
+		return this.ticketRepo.findByUser(user).stream().map(ticket -> new TicketDTO(ticket)).collect(Collectors.toList());
+	}
+
 	public boolean verifyNewTicket(Long ticketNumber){
 		Ticket ticket = ticketRepo.findByTicketNumber(ticketNumber);
 		return ticket == null;
@@ -113,4 +117,10 @@ public class TicketService implements ITicketService{
 		Collection<Ticket> tickets = this.ticketRepo.findAll();
 		return tickets.stream().map(ticket -> new TicketDTO(ticket)).collect(Collectors.toList());
 	}
+	public Collection<TicketDTO> findUserTickets(User user){
+		Collection<Ticket> tickets = this.ticketRepo.findAll();
+		return tickets.stream().map(ticket -> new TicketDTO(ticket)).collect(Collectors.toList());
+	}
+
+
 }
