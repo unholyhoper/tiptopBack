@@ -8,12 +8,12 @@ import com.tiptop.users.dto.TicketDTO;
 import com.tiptop.users.entities.PRIZE;
 import com.tiptop.users.entities.Ticket;
 import com.tiptop.users.entities.User;
+import com.tiptop.users.exception.NoTicketFoundException;
 import com.tiptop.users.repos.ITicketRepository;
 import com.tiptop.users.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 
@@ -122,6 +122,11 @@ public class TicketService implements ITicketService{
 		return tickets.stream().map(ticket -> new TicketDTO(ticket)).collect(Collectors.toList());
 	}
 
+	public TicketDTO findTicketByNumber(Long id){
+		Ticket ticket = ticketRepo.findByTicketNumber(id);
+		return new TicketDTO(ticket);
+	}
+
 	public PrizeDTO spinWheel(Ticket ticket, User user) {
 		List<PRIZE> items = new ArrayList<>();
 
@@ -140,9 +145,39 @@ public class TicketService implements ITicketService{
 		PRIZE prizeWon = prizes[randomNumber];
 		user.getPrizes().add(prizeWon);
 		ticket.setUsed(true);
+		ticket.setPrize(prizeWon.prize);
 		ticketRepo.save(ticket);
-		return new PrizeDTO(prizeWon,user);
+		int angle = 0;
+		switch (prizeWon){
+			case P1: angle = getRange(0,72);break;
+			case P2: angle = getRange(73,145);break;
+			case P3: angle = getRange(146,218);break;
+			case P4: angle = getRange(219,291);break;
+			case P5: angle = getRange(286,360);break;
+		}
+		return new PrizeDTO(prizeWon,user,angle);
+
+
+
 
 	}
 
+
+	public Ticket persistTicket(Ticket ticket){
+		this.ticketRepo.save(ticket);
+		return ticket;
+	}
+
+	private int getRange(int min , int max){
+		// Validate the range
+		if (min > max) {
+			throw new IllegalArgumentException("Invalid range: min should be less than or equal to max");
+		}
+
+		// Calculate the range (inclusive)
+		int range = max - min + 1;
+
+		// Generate and return a random number within the range
+		return (int) (Math.random() * range) + min;
+	}
 }

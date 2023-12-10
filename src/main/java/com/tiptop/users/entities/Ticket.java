@@ -29,6 +29,9 @@ public class Ticket {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	public Ticket() {
+		this.ticketNumber = generateTicketNumber();
+	}
 
 	public String getStatus() {
 		return status;

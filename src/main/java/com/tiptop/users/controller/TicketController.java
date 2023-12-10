@@ -2,10 +2,11 @@ package com.tiptop.users.controller;
 
 import com.tiptop.users.dto.PrizeDTO;
 import com.tiptop.users.dto.TicketDTO;
-import com.tiptop.users.entities.PRIZE;
 import com.tiptop.users.entities.Ticket;
 import com.tiptop.users.entities.User;
 import com.tiptop.users.exception.NoTicketFoundException;
+import com.tiptop.users.model.CreateTicketIn;
+import com.tiptop.users.model.TicketCountOut;
 import com.tiptop.users.service.TicketService;
 import com.tiptop.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +34,38 @@ public class TicketController {
 		return ticketService.findAllTickets();
 	}
 	@GetMapping("/me")
-	public Collection<TicketDTO> findMyTickets(@AuthenticationPrincipal Object principal){
-		User user =userService.findUserByUsername(principal.toString());
+	public Collection<TicketDTO> findMyTickets(@AuthenticationPrincipal Object principal) {
+		User user = userService.findUserByUsername(principal.toString());
+		return ticketService.findTicketsByUser(user);
+	}
+	@GetMapping("/{id}")
+	public Collection<TicketDTO> findMyTickets(@PathVariable Long id) {
+		User user = userService.findUserById(id);
 		return ticketService.findTicketsByUser(user);
 	}
 
+	@GetMapping("/count")
+	public TicketCountOut getTicketCount(@AuthenticationPrincipal Object principal) {
+		User user = userService.findUserByUsername(principal.toString());
+		long count = user.getTickets().stream().count();
+		return new TicketCountOut(count);
+	}
+	@PostMapping("/checkTicket/{id}")
+	public Boolean checkTicket(@PathVariable Long id , @AuthenticationPrincipal Object principal) {
+		TicketDTO ticket = this.ticketService.findTicketByNumber(id);
+		return ticket.isActive();
+	}
+
+	@PostMapping
+	public TicketDTO addTicketToUser(@RequestBody CreateTicketIn createTicketIn){
+		Ticket ticket = new Ticket();
+		User user = userService.findUserById(createTicketIn.getUserId());
+		ticket.setUsed(false);
+		ticket.setUser(user);
+		this.ticketService.persistTicket(ticket);
+		TicketDTO ticketDTO = new TicketDTO(ticket);
+		return ticketDTO;
+	}
 
 
 
@@ -70,13 +98,13 @@ public class TicketController {
 		return ticketService.findAllTicketsWithUsers();
 	}
 
-	@PostMapping("/play")
-	public PrizeDTO spinwheel(@AuthenticationPrincipal Object principal) {
+	@PostMapping("/play/{ticketNumber}")
+	public PrizeDTO spinwheel(@PathVariable Long ticketNumber, @AuthenticationPrincipal Object principal) {
 		User user = userService.findUserByUsername(principal.toString());
 		Collection<Ticket> tickets = user.getTickets();
-		Optional<Ticket> ticketOptional = tickets.stream().filter(ticket -> !ticket.isUsed()).findAny();
+		Optional<Ticket> ticketOptional = tickets.stream().filter(ticket -> ticket.getTicketNumber().equals(ticketNumber)).findAny();
 		Ticket ticket = ticketOptional.orElseThrow(() -> new NoTicketFoundException("new ticket found for user " + user.getUsername()));
-		PrizeDTO prize = ticketService.spinWheel(ticket,user);
+		PrizeDTO prize = ticketService.spinWheel(ticket, user);
 		return prize;
 	 }
 
