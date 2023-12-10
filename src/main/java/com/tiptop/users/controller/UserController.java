@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.tiptop.users.config.JwtTokenUtil;
 import com.tiptop.users.dto.UserDTO;
+import com.tiptop.users.entities.ROLES;
 import com.tiptop.users.model.JwtRequest;
 import com.tiptop.users.model.JwtResponse;
 import javafx.print.Collation;
@@ -61,6 +62,10 @@ public class UserController {
     @GetMapping
     public Collection<UserDTO> getAllUsersv1(){
         return userService.getAllUsers();
+    }
+    @GetMapping("/simple")
+    public Collection<UserDTO> getNonAdminUsers(){
+        return userService.findSimpleUsers(ROLES.USER);
     }
 
     @DeleteMapping("/{id}")

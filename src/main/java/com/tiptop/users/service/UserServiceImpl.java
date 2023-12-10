@@ -14,6 +14,7 @@ import com.tiptop.users.entities.Role;
 import com.tiptop.users.entities.User;
 import com.tiptop.users.repos.UserRepository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -84,5 +85,10 @@ public class UserServiceImpl implements UserService {
 
 	public User findUserById(Long userId) {
 		return userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("user with ID : " + userId + " cannot be found"));
+	}
+
+	@Override
+	public Collection<UserDTO> findSimpleUsers(ROLES roles) {
+		return userRepository.findByRole(ROLES.USER).stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
 	}
 }

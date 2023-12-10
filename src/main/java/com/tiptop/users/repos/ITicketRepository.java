@@ -1,5 +1,6 @@
 package com.tiptop.users.repos;
 
+import com.tiptop.users.entities.PRIZE;
 import com.tiptop.users.entities.Ticket;
 import com.tiptop.users.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +23,6 @@ public interface ITicketRepository extends JpaRepository<Ticket, Long> {
     Long findRandomUser();
 
     Collection<Ticket> findByUser(User user);
+
+    Collection<Ticket> findTicketByPrize(String prize);
 }

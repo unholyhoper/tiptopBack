@@ -156,6 +156,8 @@ public class TicketService implements ITicketService{
 			case P4: angle = getRange(219,291);break;
 			case P5: angle = getRange(286,360);break;
 		}
+
+		angle+=8*360;
 		return new PrizeDTO(prizeWon,user,angle);
 
 
@@ -181,4 +183,28 @@ public class TicketService implements ITicketService{
 		// Generate and return a random number within the range
 		return (int) (Math.random() * range) + min;
 	}
+
+	public Collection<TicketPrizeOut> findTicketsByPrizeId(String prize){
+		PRIZE p = null;
+		if (prize.equals("P1")) {
+			p = PRIZE.P1;
+		}
+		if (prize.equals("P2")) {
+			p = PRIZE.P2;
+		}
+		if (prize.equals("P3")) {
+			p = PRIZE.P3;
+		}
+		if (prize.equals("P4")) {
+			p = PRIZE.P4;
+		}
+		if (prize.equals("P5")) {
+			p = PRIZE.P5;
+		}
+
+		Collection<Ticket> tickets = this.ticketRepo.findTicketByPrize(p.prize);
+		return tickets.stream().map(ticket -> new TicketPrizeOut(ticket)).collect(Collectors.toList());
+	}
+
+
 }
