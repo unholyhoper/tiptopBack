@@ -8,7 +8,7 @@ import com.tiptop.users.dto.TicketDTO;
 import com.tiptop.users.entities.PRIZE;
 import com.tiptop.users.entities.Ticket;
 import com.tiptop.users.entities.User;
-import com.tiptop.users.exception.NoTicketFoundException;
+import com.tiptop.users.model.TicketPrizeOut;
 import com.tiptop.users.repos.ITicketRepository;
 import com.tiptop.users.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,8 +88,9 @@ public class TicketService implements ITicketService{
 		return ticket;
 	}
 
-	public List<Ticket> getTicketByUserId(Long userId){
-		return ticketRepo.findTicketsByUserId(userId);
+	public List<TicketPrizeOut> getTicketByUserId(Long userId){
+		Collection<Ticket> tickets =  ticketRepo.findTicketsByUserId(userId);
+		return tickets.stream().map(ticket -> new TicketPrizeOut(ticket)).collect(Collectors.toList());
 	}
 
 	public List<Object[]> findAllTicketsWithUsers(){

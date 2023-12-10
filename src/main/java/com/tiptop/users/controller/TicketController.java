@@ -6,6 +6,7 @@ import com.tiptop.users.entities.Ticket;
 import com.tiptop.users.entities.User;
 import com.tiptop.users.exception.NoTicketFoundException;
 import com.tiptop.users.model.CreateTicketIn;
+import com.tiptop.users.model.TicketPrizeOut;
 import com.tiptop.users.model.TicketCountOut;
 import com.tiptop.users.service.TicketService;
 import com.tiptop.users.service.UserService;
@@ -90,7 +91,7 @@ public class TicketController {
 	}
 
 	@GetMapping("/getTicketByUserId/{userId}")
-	public List<Ticket> getTicketByUserId(@PathVariable Long userId){
+	public List<TicketPrizeOut> getTicketByUserId(@PathVariable Long userId){
 		return ticketService.getTicketByUserId(userId);
 	}
 	@GetMapping("/getAllTickets")
