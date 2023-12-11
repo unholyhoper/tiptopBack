@@ -9,7 +9,6 @@ import com.tiptop.users.dto.UserDTO;
 import com.tiptop.users.entities.ROLES;
 import com.tiptop.users.model.JwtRequest;
 import com.tiptop.users.model.JwtResponse;
-import javafx.print.Collation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
