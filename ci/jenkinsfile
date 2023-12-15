@@ -81,13 +81,15 @@ pipeline {
 
         stage("deploy image"){
             steps {
-
+                 script{
 
                sh '''
-
-               ssh root@13.36.39.26
-               docker compose down
-               docker compose up -d
+               ssh root@15.237.223.123 '
+             
+                
+       
+               docker compose  down;
+               docker compose up -d '
                 '''
 
             }
